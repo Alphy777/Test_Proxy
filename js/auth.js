@@ -1,10 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("✅ auth.js loaded"); // Debugging to check if auth.js is running
+    console.log("✅ auth.js loaded");
     const loginForm = document.getElementById("login-form");
     const signupForm = document.getElementById("signup-form");
     const logoutBtn = document.getElementById("logout-btn");
 
-    // ✅ Handle Signup
+    // Check if user is on the login page while already logged in
+    if (window.location.pathname.includes('login.html') && localStorage.getItem("username")) {
+        window.location.href = "message.html"; // Redirect to chat if already logged in
+    }
+
+    // Handle Signup
     if (signupForm) {
         signupForm.addEventListener("submit", async function (event) {
             event.preventDefault();
@@ -23,18 +28,28 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            let response = await fetch("http://127.0.0.1:5000/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password })
-            });
+            try {
+                let response = await fetch("http://127.0.0.1:5000/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
 
-            let result = await response.json();
-            alert(result.status || result.error);
+                let result = await response.json();
+                if (response.ok) {
+                    alert(result.status);
+                    window.location.href = "login.html";
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                console.error("Registration error:", error);
+                alert("Registration failed. Please try again.");
+            }
         });
     }
 
-    // ✅ Handle Login
+    // Handle Login
     if (loginForm) {
         loginForm.addEventListener("submit", async function (event) {
             event.preventDefault();
@@ -42,46 +57,60 @@ document.addEventListener("DOMContentLoaded", function () {
             let username = document.getElementById("login_username").value.trim();
             let password = document.getElementById("login_password").value.trim();
 
-            let response = await fetch("http://127.0.0.1:5000/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password })
-            });
+            try {
+                let response = await fetch("http://127.0.0.1:5000/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
 
-            let result = await response.json();
-            if (result.status === "Login successful") {
-                localStorage.setItem("username", result.username);  // ✅ Store username from API
-                window.location.href = "message.html"; // ✅ Redirect to chat
-            } else {
-                alert(result.error);
+                let result = await response.json();
+                if (result.status === "Login successful") {
+                    localStorage.setItem("username", result.username);
+                    window.location.href = "message.html";
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                console.error("Login error:", error);
+                alert("Login failed. Please try again.");
             }
         });
     }
 
-    // ✅ Handle Logout
+    // Handle Logout
     if (logoutBtn) {
-        logoutBtn.addEventListener("click", function () {
+        logoutBtn.addEventListener("click", async function () {
             console.log("🔄 Logout button clicked");
 
             let username = localStorage.getItem("username");
-
             if (!username) {
                 alert("You're not logged in!");
                 return;
             }
 
-            fetch("http://127.0.0.1:5000/logout", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("✅ Logout response:", data);
-                localStorage.removeItem("username"); // ✅ Only remove the logged-out user's session
-                window.location.href = "login.html"; // ✅ Redirect to login page
-            })
-            .catch(err => console.error("❌ Logout error:", err));
+            try {
+                let response = await fetch("http://127.0.0.1:5000/logout", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username })
+                });
+
+                let result = await response.json();
+                
+                if (response.ok) {
+                    // Only remove the current user's session
+                    if (localStorage.getItem("username") === username) {
+                        localStorage.removeItem("username");
+                        window.location.href = "login.html";
+                    }
+                } else {
+                    alert("Logout failed. Please try again.");
+                }
+            } catch (error) {
+                console.error("❌ Logout error:", error);
+                alert("Logout failed. Please try again.");
+            }
         });
     }
 });
