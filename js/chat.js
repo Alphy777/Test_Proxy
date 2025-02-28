@@ -51,7 +51,8 @@ document.addEventListener("DOMContentLoaded", function () {
     
                         let messageElement = document.createElement("p");
                         messageElement.innerHTML = `<strong>${msg.sender}:</strong> ${msg.decrypted_message} <br>
-                                                    <span class="encrypted-text">(Encrypted: ${msg.encrypted_message})</span>`;
+                                                    <span class="encrypted-text">(Encrypted: ${msg.encrypted_message})</span>`; // Code to display the encrypted form along with decrypted message.
+                        // messageElement.innerHTML = `<strong>${msg.sender}:</strong> ${msg.decrypted_message} <br>`;  // Code for only showing the decrypted messages.
                         chatBox.appendChild(messageElement);
                     }
                 });
