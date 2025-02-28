@@ -4,6 +4,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const signupForm = document.getElementById("signup-form");
     const logoutBtn = document.getElementById("logout-btn");
 
+
+    function setupPasswordToggle(inputId, toggleId) {
+        const input = document.getElementById(inputId);
+        const toggle = document.getElementById(toggleId);
+
+        if (input && toggle) {
+            toggle.addEventListener("click", function () {
+                if (input.type === "password") {
+                    input.type = "text";
+                    toggle.classList.replace("fa-eye", "fa-eye-slash");
+                } else {
+                    input.type = "password";
+                    toggle.classList.replace("fa-eye-slash", "fa-eye");
+                }
+            });
+        }
+    }
+
+    setupPasswordToggle("login_password", "toggleLoginPassword");
+    setupPasswordToggle("signup_password", "toggleSignupPassword");
+    setupPasswordToggle("signup_password_re", "toggleRePassword");
+
     // Check if user is on the login page while already logged in
     if (window.location.pathname.includes('login.html') && localStorage.getItem("username")) {
         window.location.href = "message.html"; // Redirect to chat if already logged in

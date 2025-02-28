@@ -6,6 +6,9 @@
   <title>AEDA-Login/Sign-up</title>
   <link rel="icon" href="images/AEDA.png">
   <link rel="stylesheet" href="css/loginstyle.css">
+  <!-- Font Awesome for Eye Icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
 </head>
 <body>
   <div class="container" id="container">
@@ -14,7 +17,10 @@
       <form id="login-form" action="#">
         <h1>Login Now</h1>
         <input type="text" id="login_username" placeholder="Username" required />
-        <input type="password" id="login_password" placeholder="Password" required />
+        <div class="password-container">
+          <input type="password" id="login_password" placeholder="Password" required />
+          <i class="fas fa-eye" id="toggleLoginPassword"></i>
+        </div>
         <button type="submit">Sign In</button>
         <a href="#">Forgot your password?</a>
       </form>
@@ -24,9 +30,18 @@
     <div class="form-container sign-up-container">
       <form id="signup-form" action="#">
         <h1>Register Now</h1>
-        <input type="text" id="signup_username" placeholder="Username" required />
-        <input type="password" id="signup_password" placeholder="Password" required />
-        <input type="password" id="signup_password_re" placeholder="Re-enter password" required />
+        <input type="text" id="signup_username" placeholder="Username" required />      
+        
+        <div class="password-container">
+          <input type="password" id="signup_password" placeholder="Password" required />
+          <i class="fas fa-eye" id="toggleSignupPassword"></i>
+        </div>  
+      
+        <div class="password-container">
+          <input type="password" id="signup_password_re" placeholder="Re-enter password" required />
+          <i class="fas fa-eye" id="toggleRePassword"></i>
+        </div>      
+        
         <button type="submit">Sign Up</button>
       </form>
     </div>

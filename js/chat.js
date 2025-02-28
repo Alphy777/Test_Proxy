@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function startChat(user) {
         selectedUser = user;
+        document.getElementById("chatHeader").innerText = `Chatting with: ${user}`;
         chatBox.innerHTML = `<h4>Chat with ${user}</h4>`;
         fetchMessages();
     }
