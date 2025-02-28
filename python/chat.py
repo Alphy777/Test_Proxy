@@ -60,11 +60,14 @@ def get_messages(username):
     chat_history = [{
         "sender": msg[0],
         "receiver": msg[1],
-        "message": decrypt_message(msg[2]),  # Decrypt using AES
+        "encrypted_message": msg[2],  # Send the encrypted message too
+        "decrypted_message": decrypt_message(msg[2]),  # Decrypt before sending
         "timestamp": msg[3]
     } for msg in messages]
 
     return jsonify(chat_history)
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)

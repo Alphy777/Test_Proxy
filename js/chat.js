@@ -44,12 +44,14 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch(`http://127.0.0.1:5001/get-messages/${username}`)
             .then(response => response.json())
             .then(messages => {
-                chatBox.innerHTML = "";
+                chatBox.innerHTML = ""; // Clear chat box before adding new messages
                 messages.forEach(msg => {
-                    if (msg.sender === username && msg.receiver === selectedUser ||
-                        msg.sender === selectedUser && msg.receiver === username) {
+                    if ((msg.sender === username && msg.receiver === selectedUser) ||
+                        (msg.sender === selectedUser && msg.receiver === username)) {
+    
                         let messageElement = document.createElement("p");
-                        messageElement.innerText = `${msg.sender}: ${msg.message}`;
+                        messageElement.innerHTML = `<strong>${msg.sender}:</strong> ${msg.decrypted_message} <br>
+                                                    <span class="encrypted-text">(Encrypted: ${msg.encrypted_message})</span>`;
                         chatBox.appendChild(messageElement);
                     }
                 });

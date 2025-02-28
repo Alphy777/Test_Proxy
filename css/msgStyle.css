@@ -237,6 +237,11 @@ input[type="text"]:focus{
   color: white;
 }
 
+.encrypted-text {
+  font-size: 12px;
+  color: gray;
+}
+
 .chat-input {
   width: 75%;
   padding: 1rem;
